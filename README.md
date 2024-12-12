@@ -10,8 +10,8 @@ Installation
 
 Requirements:
 
-  - tmux **`>= 2.4`** running inside Linux, Mac, OpenBSD, Cygwin or WSL
-  - awk, perl and sed
+  - tmux **`>= 2.6`** running inside Linux, Mac, OpenBSD, Cygwin or WSL
+  - awk, perl (with Time::HiRes support) and sed
   - outside of tmux, `$TERM` must be set to `xterm-256color`
 
 ⚠️ Before installing, you may want to backup your existing configuration.
@@ -54,12 +54,12 @@ you're on your own. Instead, every customization should happen in your
 If you're a Vim user, setting the `$EDITOR` environment variable to `vim` will
 enable and further customize the vi-style key bindings (see tmux manual).
 
-If you're new to tmux, I recommend you to read [tmux 2: Productive Mouse-Free
-Development][bhtmux2] by [@bphogan].
+If you're new to tmux, I recommend you to read [tmux 3: Productive Mouse-Free
+Development][bhtmux3] by [@bphogan].
 
 Now proceed to [adjust] your `.local` customization file copy.
 
-[bhtmux2]: https://pragprog.com/titles/bhtmux2/tmux-2
+[bhtmux3]: https://pragprog.com/titles/bhtmux3/tmux-3/
 [@bphogan]: https://twitter.com/bphogan
 [adjust]: #configuration
 
@@ -120,24 +120,21 @@ Features
  - [maximize any pane to a new window with `<prefix> +`][maximize-pane]
  - SSH/Mosh aware username and hostname status line information
  - mouse mode toggle with `<prefix> m`
- - automatic usage of [`reattach-to-user-namespace`][reattach-to-user-namespace]
-   if available
  - laptop battery status line information
  - uptime status line information
  - optional highlight of focused pane
  - configurable new windows and panes behavior (optionally retain current path)
  - SSH/Mosh aware split pane (reconnects to remote server)
- - copy to OS clipboard (needs [`reattach-to-user-namespace`][reattach-to-user-namespace]
-   on macOS, `xsel`, `xclip`, or `wl-copy` on Linux)
+ - copy to OS clipboard (needs `xsel`, `xclip`, or `wl-copy` on Linux)
  - support for 4-digit hexadecimal Unicode characters
  - [Facebook PathPicker][] integration if available
- - [Urlview][] integration if available
+ - [Urlscan][] (preferred) or [Urlview][] integration if available
 
 [Powerline]: https://github.com/Lokaltog/powerline
 [maximize-pane]: http://pempek.net/articles/2013/04/14/maximizing-tmux-pane-new-window/
-[reattach-to-user-namespace]: https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard
 [Facebook PathPicker]: https://facebook.github.io/PathPicker/
 [Urlview]: https://packages.debian.org/stable/misc/urlview
+[Urlscan]: https://github.com/firecat53/urlscan
 
 The "maximize any pane to a new window with `<prefix> +`" feature is different
 from builtin `resize-pane -Z` as it allows you to further split a maximized
@@ -188,8 +185,8 @@ This configuration uses the following bindings:
 
  - `<prefix> m` toggles mouse mode on or off
 
- - `<prefix> U` launches Urlview (if available)
- - `<prefix> F` launches Facebook PathPicker (if available)
+ - `<prefix> U` launches Urlscan (preferred) or Urlview, if available
+ - `<prefix> F` launches Facebook PathPicker, if available
 
  - `<prefix> Enter` enters copy-mode
  - `<prefix> b` lists the paste-buffers
@@ -270,15 +267,18 @@ your own preferences.
 This configuration supports the following builtin variables:
 
  - `#{battery_bar}`: horizontal battery charge bar
+ - `#{battery_hbar}`: 1 character wide, horizontal battery charge bar
+ - `#{battery_vbar}`: 1 character wide, vertical battery charge bar
  - `#{battery_percentage}`: battery percentage
  - `#{battery_status}`: is battery charging or discharging?
- - `#{battery_vbar}`: vertical battery charge bar
  - `#{circled_session_name}`: circled session number, up to 20
  - `#{hostname}`: SSH/Mosh aware hostname information
  - `#{hostname_ssh}`: SSH/Mosh aware hostname information, blank when not
    connected to a remote server through SSH/Mosh
  - `#{loadavg}`: load average
  - `#{pairing}`: is session attached to more than one client?
+ - `#{pretty_pane_current_path}`: prettified `#{pane_current_path}` when its
+   length is too long
  - `#{prefix}`: is prefix being depressed?
  - `#{root}`: is current user root?
  - `#{synchronized}`: are the panes synchronized?
@@ -335,26 +335,6 @@ This configuration now comes with built-in [TPM] support:
 See the sample `.local` customization file for instructions.
 
 [TPM]: https://github.com/tmux-plugins/tpm
-
-### Accessing the macOS clipboard from within tmux sessions (tmux `< 2.6`)
-
-[Chris Johnsen created the `reattach-to-user-namespace`
-utility][reattach-to-user-namespace] that makes `pbcopy` and `pbpaste` work
-again within tmux.
-
-To install `reattach-to-user-namespace`, use either [MacPorts][] or
-[Homebrew][]:
-
-    $ port install tmux-pasteboard
-
-or
-
-    $ brew install reattach-to-user-namespace
-
-Once installed, `reattach-to-usernamespace` will be automatically detected.
-
-[MacPorts]: http://www.macports.org/
-[Homebrew]: http://brew.sh/
 
 ### Using the configuration under Cygwin within Mintty
 
